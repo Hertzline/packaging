@@ -1,4 +1,4 @@
-# HZ-008 D5 packaging spike CI. Actions pinned to commit SHAs (REPOS.md / RULES.md).
+# Packaging spike CI (D5 + D6). Actions pinned to commit SHAs (REPOS.md / RULES.md).
 name: ci
 
 on:
@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 jobs:
-  d5-docs:
-    name: d5-docs (${{ matrix.os }})
+  spike-docs:
+    name: spike-docs (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -29,3 +29,6 @@ jobs:
 
       - name: D5 spike check
         run: python scripts/check_d5.py
+
+      - name: D6 spike check
+        run: python scripts/check_d6.py

@@ -9,6 +9,7 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 | Path | Role |
 |---|---|
 | `spikes/D5.md` | HZ-008 packaging + signing costs decision |
+| `spikes/D6.md` | HZ-009 auto-update + signature verification decision |
 | `windows/` | MSI / NSIS / MSIX notes and future scripts |
 | `linux/` | Flatpak / AppImage / deb / rpm / AUR notes |
 | `macos/` | dmg / notarization / Homebrew cask notes |
@@ -25,11 +26,21 @@ See `spikes/D5.md`. Summary:
 - Signing required for public Windows/macOS releases; never skip silently.
 - Purchases and store/winget submissions are owner-gated.
 
+## Decision (D6)
+
+See `spikes/D6.md`. Summary:
+
+- Direct downloads: Tauri updater with mandatory minisign verify + `requireSignedVersion`.
+- Channel installs: winget / Flatpak / Homebrew own updates; in-app updater off.
+- Manual download + SHA-256 always available.
+- Never signature-optional or silent unsigned updates.
+
 ## Checks
 
 ```bash
 # From repo root (PowerShell or bash)
 python scripts/check_d5.py
+python scripts/check_d6.py
 ```
 
 ## License
