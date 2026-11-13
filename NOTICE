@@ -1,0 +1,6 @@
+Hertzline packaging
+Copyright (c) 2026 Hertzline
+
+This repository currently ships documentation and scripts only (HZ-008 spike).
+Third-party tools referenced for future packaging builds will be inventoried
+here with SPDX identifiers when they are vendored or pinned.
