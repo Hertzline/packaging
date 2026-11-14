@@ -32,3 +32,7 @@ jobs:
 
       - name: D6 spike check
         run: python scripts/check_d6.py
+
+      - name: HZ-018 uninstall restore hooks
+        run: python scripts/check_hz018.py
+
