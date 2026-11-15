@@ -1,4 +1,4 @@
-# Packaging CI (D5 + D6 + HZ-018 + HZ-049 + HZ-050 + HZ-051 + HZ-052). Actions pinned to commit SHAs.
+# Packaging CI (D5 + D6 + HZ-018 + HZ-049 + HZ-050 + HZ-051 + HZ-052 + HZ-053). Actions pinned to commit SHAs.
 name: ci
 
 on:
@@ -47,3 +47,6 @@ jobs:
 
       - name: HZ-052 release metadata -> website feed
         run: python scripts/check_hz052.py
+
+      - name: HZ-053 winget manifests
+        run: python scripts/check_hz053.py

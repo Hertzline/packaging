@@ -25,7 +25,8 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 | `macos/MACOS.md` | HZ-051 DMG build, notarization steps + costs |
 | `macos/SIGNING.md` | Developer ID + notarization; fail closed |
 | `macos/homebrew/` | Homebrew cask draft (no publish without approval) |
-| `winget/` | Manifests for `Hertzline.Hertzline` (authored later) |
+| `winget/` | HZ-053 draft manifests for `Hertzline.Hertzline` (no PR without approval) |
+| `winget/WINGET.md` | Schema 1.12.0 notes, refresh steps, owner gate for HZ-054 |
 | `release/RELEASE_FEED.md` | HZ-052 packaging -> `website` releases.json hook |
 | `fixtures/hz052/` | Sample SHA256SUMS for the release-feed gate |
 | `scripts/` | Build, checksum, sign, and gate helpers |
@@ -101,6 +102,17 @@ python scripts/check_hz052.py
 
 See `release/RELEASE_FEED.md`. Output targets sibling `../website/src/data/releases.json`. Owner deploys Vercel; agents never deploy.
 
+## winget manifests (HZ-053)
+
+Draft multi-file manifests live under `winget/manifests/h/Hertzline/Hertzline/<version>/` (`ManifestVersion` **1.12.0**). Install string matches website/docs: `winget install Hertzline.Hertzline`.
+
+```bash
+python scripts/check_hz053.py
+winget validate --manifest winget/manifests/h/Hertzline/Hertzline/0.0.0
+```
+
+Do **not** open a PR to `microsoft/winget-pkgs` without explicit owner approval (HZ-054). See `winget/WINGET.md`.
+
 ## Checks
 
 ```bash
@@ -112,6 +124,7 @@ python scripts/check_hz049.py
 python scripts/check_hz050.py
 python scripts/check_hz051.py
 python scripts/check_hz052.py
+python scripts/check_hz053.py
 ```
 
 ### Uninstall restore (HZ-018 / HZ-049 / HZ-050 / HZ-051 / AC-7.3)
