@@ -78,25 +78,42 @@ def main() -> int:
     else:
         print("UNAVAILABLE sibling app (CI packaging-only checkout); skip version assert")
 
-    # Website must stay not_released until signed public assets exist.
+    # Website feed: not_released until public assets, or released with live HTTPS URLs.
     releases_path = WEBSITE / "src" / "data" / "releases.json"
     if releases_path.is_file():
         releases = json.loads(releases_path.read_text(encoding="utf-8"))
-        if releases.get("status") != "not_released":
-            return fail(
-                "website releases.json must stay not_released until signed public assets"
+        status = releases.get("status")
+        if status == "not_released":
+            if releases.get("wingetPublished") is True:
+                return fail("wingetPublished must stay false while not_released")
+            if releases.get("latest") is not None:
+                return fail("not_released latest must be null")
+            for os_key in ("windows", "linux", "macos"):
+                if releases.get("artifacts", {}).get(os_key):
+                    return fail(f"not_released artifacts.{os_key} must be empty")
+            ui_en = (releases.get("ui") or {}).get("en") or {}
+            if "1.0.0" not in ui_en.get("notReleased", ""):
+                return fail("website notReleased copy must mention RC 1.0.0 readiness")
+            print("PASS website releases.json not_released (honest empty downloads)")
+        elif status == "released":
+            latest = releases.get("latest") or {}
+            if latest.get("version") != VERSION:
+                return fail(f"released latest.version must be {VERSION}")
+            win = releases.get("artifacts", {}).get("windows") or []
+            if not win:
+                return fail("released requires windows artifacts")
+            for row in win:
+                url = row.get("url") or ""
+                if not url.startswith("https://github.com/Hertzline/app/releases/"):
+                    return fail(f"artifact URL must be Hertzline/app Releases HTTPS: {url}")
+                if not row.get("sha256"):
+                    return fail("released artifact missing sha256")
+            print(
+                f"PASS website releases.json released v{VERSION} "
+                f"windows={len(win)} wingetPublished={releases.get('wingetPublished')}"
             )
-        if releases.get("wingetPublished") is True:
-            return fail("wingetPublished must stay false until HZ-054")
-        if releases.get("latest") is not None:
-            return fail("not_released latest must be null")
-        for os_key in ("windows", "linux", "macos"):
-            if releases.get("artifacts", {}).get(os_key):
-                return fail(f"not_released artifacts.{os_key} must be empty")
-        ui_en = (releases.get("ui") or {}).get("en") or {}
-        if "1.0.0" not in ui_en.get("notReleased", ""):
-            return fail("website notReleased copy must mention RC 1.0.0 readiness")
-        print("PASS website releases.json not_released (honest empty downloads)")
+        else:
+            return fail(f"unexpected releases.status={status}")
     else:
         print("UNAVAILABLE sibling website; skip releases.json assert")
 

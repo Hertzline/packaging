@@ -16,13 +16,21 @@ Packaging owns the producer: `scripts/write_release_metadata.py`.
 | `wingetId` | fixed | `Hertzline.Hertzline` |
 | Secrets | never | Private keys, tokens, certs rejected |
 
-Artifact URLs are public HTTPS only:
+Artifact URLs are public HTTPS only.
+
+Nested layout (default):
 
 ```text
 {base-url}/{windows|linux|macos}/{filename}
 ```
 
-Example base: `https://github.com/Hertzline/app/releases/download/v0.1.0`
+GitHub Releases flat layout (`--flat-urls`):
+
+```text
+{base-url}/{filename}
+```
+
+Example base: `https://github.com/Hertzline/app/releases/download/v1.0.0`
 
 ## Produce a feed (owner / release CI)
 

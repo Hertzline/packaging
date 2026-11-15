@@ -95,9 +95,19 @@ def artifact_entry(
     sha256: str,
     base_url: str,
     size_bytes: int | None,
+    *,
+    flat_urls: bool = False,
+    os_key_hint: str | None = None,
 ) -> tuple[str, dict[str, Any]]:
     os_key, art_id, label_prefix = classify(filename)
-    url = f"{base_url.rstrip('/')}/{filename}"
+    if os_key_hint and os_key_hint != os_key:
+        raise ValueError(
+            f"{filename} classified as {os_key} but listed under {os_key_hint}"
+        )
+    if flat_urls:
+        url = f"{base_url.rstrip('/')}/{filename}"
+    else:
+        url = f"{base_url.rstrip('/')}/{os_key}/{filename}"
     if not url.startswith("https://"):
         raise ValueError(f"artifact URL must be https: {url}")
     entry: dict[str, Any] = {
@@ -170,6 +180,7 @@ def build_feed(
     highlights_en: list[str],
     highlights_it: list[str],
     winget_published: bool,
+    flat_urls: bool = False,
 ) -> dict[str, Any]:
     if not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("version must be MAJOR.MINOR.PATCH (no leading v)")
@@ -190,8 +201,10 @@ def build_feed(
             classified_os, entry = artifact_entry(
                 filename,
                 digest,
-                f"{base_url.rstrip('/')}/{os_key}",
+                base_url,
                 size_lookup.get(filename),
+                flat_urls=flat_urls,
+                os_key_hint=os_key,
             )
             if classified_os != os_key:
                 raise ValueError(
@@ -313,6 +326,11 @@ def main() -> int:
         help="Set wingetPublished true (owner-gated; never for not_released)",
     )
     parser.add_argument(
+        "--flat-urls",
+        action="store_true",
+        help="GitHub Release layout: {base}/{filename} (no /windows|linux|macos/ infix)",
+    )
+    parser.add_argument(
         "--size",
         action="append",
         default=[],
@@ -359,6 +377,7 @@ def main() -> int:
             highlights_en=list(args.highlight_en),
             highlights_it=list(args.highlight_it),
             winget_published=args.winget_published,
+            flat_urls=bool(args.flat_urls),
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return fail(str(exc))
