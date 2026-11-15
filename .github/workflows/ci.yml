@@ -1,4 +1,4 @@
-# Packaging CI (D5 + D6 + HZ-018 + HZ-049 + HZ-050 + HZ-051). Actions pinned to commit SHAs.
+# Packaging CI (D5 + D6 + HZ-018 + HZ-049 + HZ-050 + HZ-051 + HZ-052). Actions pinned to commit SHAs.
 name: ci
 
 on:
@@ -44,3 +44,6 @@ jobs:
 
       - name: HZ-051 macOS DMG + Homebrew cask gates
         run: python scripts/check_hz051.py
+
+      - name: HZ-052 release metadata -> website feed
+        run: python scripts/check_hz052.py

@@ -26,6 +26,8 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 | `macos/SIGNING.md` | Developer ID + notarization; fail closed |
 | `macos/homebrew/` | Homebrew cask draft (no publish without approval) |
 | `winget/` | Manifests for `Hertzline.Hertzline` (authored later) |
+| `release/RELEASE_FEED.md` | HZ-052 packaging -> `website` releases.json hook |
+| `fixtures/hz052/` | Sample SHA256SUMS for the release-feed gate |
 | `scripts/` | Build, checksum, sign, and gate helpers |
 
 ## Decision (D5)
@@ -88,6 +90,17 @@ Homebrew cask draft is under `macos/homebrew/`. Do not open a homebrew-cask PR w
 
 Public Developer ID + notarization fails closed without owner-supplied Apple Program credentials (`macos/SIGNING.md`). Cost: **$99/yr** Apple Developer Program (D5).
 
+## Release metadata -> website (HZ-052)
+
+After signed artifacts exist, generate the static download/changelog feed (no secrets):
+
+```bash
+python scripts/write_release_metadata.py --help
+python scripts/check_hz052.py
+```
+
+See `release/RELEASE_FEED.md`. Output targets sibling `../website/src/data/releases.json`. Owner deploys Vercel; agents never deploy.
+
 ## Checks
 
 ```bash
@@ -98,6 +111,7 @@ python scripts/check_hz018.py
 python scripts/check_hz049.py
 python scripts/check_hz050.py
 python scripts/check_hz051.py
+python scripts/check_hz052.py
 ```
 
 ### Uninstall restore (HZ-018 / HZ-049 / HZ-050 / HZ-051 / AC-7.3)
