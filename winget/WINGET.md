@@ -50,10 +50,11 @@ ARP `Publisher` from that MSI is `hertzline` (Tauri Manufacturer); `AppsAndFeatu
 
 ## Pre-release honesty
 
-- Package version `0.0.0` is a packaging draft, not a public GitHub Release.
-- The InstallerUrl for `v0.0.0` is **not live** until a signed release exists.
-- Website `/download/` keeps `wingetPublished: false` until HZ-054 lands with owner approval.
-- `winget validate` checks schema locally; it does not prove the URL downloads.
+- Package version `0.0.0` remains a packaging draft.
+- `1.0.0` InstallerUrl points at the public GitHub Release `v1.0.0` MSI.
+- Website `/download/` is `released` for v1.0.0; `wingetPublished` stays false until the winget-pkgs PR merges.
+- Authenticode is still pending the owner certificate; release notes say so honestly.
+- `winget validate` checks schema locally; it does not prove community acceptance.
 
 ## Refresh before a real submission
 
@@ -62,7 +63,8 @@ ARP `Publisher` from that MSI is `hertzline` (Tauri Manufacturer); `AppsAndFeatu
 3. Copy manifests to `winget/manifests/h/Hertzline/Hertzline/X.Y.Z/`.
 4. Set `PackageVersion`, `InstallerUrl`, `InstallerSha256`, and `ProductCode` from the signed MSI.
 5. Run `python scripts/check_hz053.py` and `winget validate --manifest <version-dir>`.
-6. Stop. Owner opens the winget-pkgs PR only after explicit approval (HZ-054).
+6. Open / track the winget-pkgs PR only with explicit owner approval (HZ-054).
+7. HZ-054: PR opened 2026-11-15 -- https://github.com/microsoft/winget-pkgs/pull/481079
 
 ## v1.0.0 RC draft (HZ-059)
 
