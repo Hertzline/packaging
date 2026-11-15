@@ -1,0 +1,13 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": ["dmg"],
+    "macOS": {
+      "minimumSystemVersion": "13.0",
+      "dmg": {}
+    },
+    "resources": [
+      "../../packaging/macos/uninstall-restore.sh"
+    ]
+  }
+}

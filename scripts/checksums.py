@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write SHA-256 checksums for release artifacts (HZ-049 / HZ-050)."""
+"""Write SHA-256 checksums for release artifacts (HZ-049 / HZ-050 / HZ-051)."""
 
 from __future__ import annotations
 
@@ -50,6 +50,7 @@ def main() -> int:
         ".deb",
         ".rpm",
         ".appimage",
+        ".dmg",
     }
     files = sorted(
         p

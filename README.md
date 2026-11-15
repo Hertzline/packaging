@@ -22,7 +22,9 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 | `linux/flatpak/` | Flatpak manifest + AppStream metainfo draft |
 | `linux/aur/` | AUR PKGBUILD draft (no publish without approval) |
 | `macos/uninstall-restore.sh` | HZ-018 uninstall restore before SMAppService unregister |
-| `macos/` | dmg / notarization / Homebrew cask notes |
+| `macos/MACOS.md` | HZ-051 DMG build, notarization steps + costs |
+| `macos/SIGNING.md` | Developer ID + notarization; fail closed |
+| `macos/homebrew/` | Homebrew cask draft (no publish without approval) |
 | `winget/` | Manifests for `Hertzline.Hertzline` (authored later) |
 | `scripts/` | Build, checksum, sign, and gate helpers |
 
@@ -72,6 +74,20 @@ Flatpak and AUR drafts are under `linux/flatpak/` and `linux/aur/`. Do not submi
 
 Public GPG signing fails closed without owner-supplied key (`scripts/sign_linux.py --public`).
 
+## macOS build (HZ-051)
+
+Requires sibling `../app` on a **macOS** host (Xcode CLT). See `macos/MACOS.md` and `macos/SIGNING.md`.
+
+```bash
+python scripts/build_macos.py --check-only
+python scripts/build_macos.py
+python scripts/sign_macos.py --public --artifacts dist/macos/<version>
+```
+
+Homebrew cask draft is under `macos/homebrew/`. Do not open a homebrew-cask PR without owner approval.
+
+Public Developer ID + notarization fails closed without owner-supplied Apple Program credentials (`macos/SIGNING.md`). Cost: **$99/yr** Apple Developer Program (D5).
+
 ## Checks
 
 ```bash
@@ -81,9 +97,10 @@ python scripts/check_d6.py
 python scripts/check_hz018.py
 python scripts/check_hz049.py
 python scripts/check_hz050.py
+python scripts/check_hz051.py
 ```
 
-### Uninstall restore (HZ-018 / HZ-049 / AC-7.3)
+### Uninstall restore (HZ-018 / HZ-049 / HZ-050 / HZ-051 / AC-7.3)
 
 Before deleting binaries, installers must run the OS restore hook so outstanding Hertzline changes are reverted without the UI:
 
