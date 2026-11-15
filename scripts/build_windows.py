@@ -129,19 +129,28 @@ def main() -> int:
         print("FAIL missing:", ", ".join(missing))
         return 1
 
+    print(f"PASS merge config={MERGE_CONFIG.relative_to(ROOT)}")
+
+    if args.check_only:
+        if APP.is_dir():
+            version = read_app_version()
+            print(f"PASS app version={version}")
+        else:
+            print(
+                "WARN sibling app repo missing; layout-only check "
+                "(CI packaging checkout)"
+            )
+        helper = stage_helper_resource()
+        write_merge_config_with_helper(helper)
+        print("PASS build_windows --check-only")
+        return 0
+
     if not APP.is_dir():
         print(f"FAIL sibling app repo missing: {APP}")
         return 1
 
     version = read_app_version()
     print(f"PASS app version={version}")
-    print(f"PASS merge config={MERGE_CONFIG.relative_to(ROOT)}")
-
-    if args.check_only:
-        helper = stage_helper_resource()
-        write_merge_config_with_helper(helper)
-        print("PASS build_windows --check-only")
-        return 0
 
     if os.name != "nt":
         print("FAIL Windows MSI/NSIS build requires a Windows host (WiX)")
