@@ -1,8 +1,20 @@
-# Hertzline / packaging
+<div align="center">
+
+<a href="https://github.com/Hertzline/packaging"><img src="https://capsule-render.vercel.app/api?type=waving&height=160&color=0:0f1412,55:12352c,100:0f6b4c&text=packaging&fontColor=e8eeeb&fontSize=52&fontAlignY=48&animation=twinkling" alt="Hertzline packaging" width="100%" /></a>
+
+<img src="https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&weight=500&size=15&color=2A9B7A&center=true&vCenter=true&width=560&height=32&duration=2600&pause=1200&lines=Installers+%2B+checksums+%2B+signing+orchestration;winget+Hertzline.Hertzline;Never+skip+signing+for+public+releases" alt="Packaging" />
+
+</div>
+
+<br/>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&height=3&color=0:0f1412,35:2a9b7a,70:c9a227,100:0f1412" width="100%" alt="" />
+
+<br/>
 
 Installers, manifests, release scripts, checksums, and signing orchestration for [Hertzline](https://github.com/Hertzline).
 
-Owner supplies certificates and approves purchases. Agents never purchase certs, submit to stores, or open winget PRs without explicit owner approval.
+Owner supplies certificates and approves purchases. Agents never purchase certs or submit to stores without explicit owner approval.
 
 ## Layout
 
