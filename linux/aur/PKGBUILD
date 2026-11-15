@@ -1,0 +1,21 @@
+# Maintainer: Hertzline <https://github.com/Hertzline>
+# Draft only (HZ-050). Do not push to aur.archlinux.org without owner approval.
+# Pattern: extract release .deb (https://v2.tauri.app/distribute/aur/).
+
+pkgname=hertzline
+pkgver=0.0.0
+pkgrel=1
+pkgdesc="Measure, explain, and reverse game and desktop tuning"
+arch=('x86_64')
+url="https://github.com/Hertzline/app"
+license=('MIT')
+depends=('cairo' 'desktop-file-utils' 'gdk-pixbuf2' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libsoup' 'pango' 'webkit2gtk-4.1' 'polkit')
+options=('!strip' '!debug')
+install=${pkgname}.install
+source_x86_64=("${url}/releases/download/v${pkgver}/hertzline_${pkgver}_amd64.deb")
+# Replace when a signed release exists; check_hz050 accepts PLACEHOLDER.
+sha256sums_x86_64=('PLACEHOLDER_REPLACE_WITH_RELEASE_SHA256')
+
+package() {
+  tar -xvf data.tar.gz -C "${pkgdir}" 2>/dev/null || tar -xvf data.tar.zst -C "${pkgdir}"
+}

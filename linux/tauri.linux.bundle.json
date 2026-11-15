@@ -1,0 +1,21 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "deb", "rpm"],
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": false
+      },
+      "deb": {
+        "preRemoveScript": "../../packaging/linux/prerm-restore.sh"
+      },
+      "rpm": {
+        "release": "1",
+        "preRemoveScript": "../../packaging/linux/prerm-restore.sh"
+      }
+    },
+    "resources": [
+      "../../packaging/linux/prerm-restore.sh"
+    ]
+  }
+}

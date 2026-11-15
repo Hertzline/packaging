@@ -1,7 +1,9 @@
-# Build outputs (HZ-049)
+# Build outputs (HZ-049 / HZ-050)
 /dist/
 /windows/staged/
 /windows/tauri.windows.bundle.generated.json
+/linux/staged/
+/linux/tauri.linux.bundle.generated.json
 
 # Local tooling
 .DS_Store

@@ -1,4 +1,4 @@
-# Packaging CI (D5 + D6 + HZ-018 + HZ-049). Actions pinned to commit SHAs.
+# Packaging CI (D5 + D6 + HZ-018 + HZ-049 + HZ-050). Actions pinned to commit SHAs.
 name: ci
 
 on:
@@ -38,3 +38,6 @@ jobs:
 
       - name: HZ-049 Windows MSI/NSIS packaging gates
         run: python scripts/check_hz049.py
+
+      - name: HZ-050 Linux Flatpak/AppImage/deb/rpm/AUR gates
+        run: python scripts/check_hz050.py

@@ -16,9 +16,12 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 | `windows/uninstall-restore.ps1` | AC-7.3 uninstall invokes `hertzline-helper restore_all` |
 | `windows/nsis-hooks.nsh` | NSIS `PREUNINSTALL` restore hook |
 | `windows/wix/uninstall-restore.wxs` | MSI CustomAction before `RemoveFiles` |
-| `linux/prerm-restore.sh` | HZ-018 deb/rpm prerm restore hook |
+| `linux/prerm-restore.sh` | HZ-018 / HZ-050 deb/rpm prerm restore hook |
+| `linux/LINUX.md` | HZ-050 AppImage + deb + rpm + Flatpak + AUR |
+| `linux/SANDBOX.md` | Flatpak sandbox vs host polkit/helper limits |
+| `linux/flatpak/` | Flatpak manifest + AppStream metainfo draft |
+| `linux/aur/` | AUR PKGBUILD draft (no publish without approval) |
 | `macos/uninstall-restore.sh` | HZ-018 uninstall restore before SMAppService unregister |
-| `linux/` | Flatpak / AppImage / deb / rpm / AUR notes |
 | `macos/` | dmg / notarization / Homebrew cask notes |
 | `winget/` | Manifests for `Hertzline.Hertzline` (authored later) |
 | `scripts/` | Build, checksum, sign, and gate helpers |
@@ -55,6 +58,20 @@ python scripts/build_msix.py
 
 Public signing fails closed without owner-supplied credentials (`windows/SIGNING.md`).
 
+## Linux build (HZ-050)
+
+Requires sibling `../app` on a **Linux** host (WebKitGTK 4.1; Ubuntu 22.04 / Debian 12 baseline). See `linux/LINUX.md` and `linux/SANDBOX.md`.
+
+```bash
+python scripts/build_linux.py --check-only
+python scripts/build_linux.py
+python scripts/sign_linux.py --public --artifacts dist/linux/<version>
+```
+
+Flatpak and AUR drafts are under `linux/flatpak/` and `linux/aur/`. Do not submit to Flathub or the AUR without owner approval.
+
+Public GPG signing fails closed without owner-supplied key (`scripts/sign_linux.py --public`).
+
 ## Checks
 
 ```bash
@@ -63,6 +80,7 @@ python scripts/check_d5.py
 python scripts/check_d6.py
 python scripts/check_hz018.py
 python scripts/check_hz049.py
+python scripts/check_hz050.py
 ```
 
 ### Uninstall restore (HZ-018 / HZ-049 / AC-7.3)

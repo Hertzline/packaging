@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write SHA-256 checksums for release artifacts (HZ-049)."""
+"""Write SHA-256 checksums for release artifacts (HZ-049 / HZ-050)."""
 
 from __future__ import annotations
 
@@ -42,11 +42,25 @@ def main() -> int:
         print(f"FAIL not a directory: {directory}")
         return 1
 
-    suffixes = {".msi", ".exe", ".msix", ".msixbundle"}
+    suffixes = {
+        ".msi",
+        ".exe",
+        ".msix",
+        ".msixbundle",
+        ".deb",
+        ".rpm",
+        ".appimage",
+    }
     files = sorted(
         p
         for p in directory.iterdir()
-        if p.is_file() and p.suffix.lower() in suffixes and p.name != "SHA256SUMS.txt"
+        if p.is_file()
+        and (
+            p.suffix.lower() in suffixes
+            or p.name.lower().endswith(".appimage")
+        )
+        and p.name != "SHA256SUMS.txt"
+        and not p.name.endswith(".asc")
     )
     if not files:
         print(f"FAIL no installer artifacts in {directory}")

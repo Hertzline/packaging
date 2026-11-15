@@ -1,0 +1,59 @@
+# Hertzline Flatpak manifest draft (HZ-050).
+# Pattern: wrap a Tauri-built .deb (https://v2.tauri.app/distribute/flatpak/).
+# Do not submit to Flathub without explicit owner approval (RULES.md).
+# Sandbox / helper limits: ../SANDBOX.md
+#
+# Runtime: re-verify org.gnome.Platform version on Flathub before publish.
+# Placeholder .deb URL/sha256 must be replaced when a real release exists.
+
+id: org.hertzline.Hertzline
+
+runtime: org.gnome.Platform
+runtime-version: "47"
+sdk: org.gnome.Sdk
+
+command: hertzline
+
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --share=ipc
+  # No PolicyKit talk-name: privileged actions are not-possible inside Flatpak alone.
+
+modules:
+  - name: hertzline
+    buildsystem: simple
+    sources:
+      - type: file
+        path: org.hertzline.Hertzline.metainfo.xml
+      # Release .deb: replace url + sha256 when artifacts exist (HZ-052 / release).
+      # Local test can swap to path: ../../dist/linux/<ver>/hertzline_0.0.0_amd64.deb
+      - type: file
+        url: https://github.com/Hertzline/app/releases/download/v0.0.0/hertzline_0.0.0_amd64.deb
+        sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+        only-arches: [x86_64]
+    build-commands:
+      - set -e
+      - mkdir deb-extract
+      - ar -x *.deb --output deb-extract
+      - tar -C deb-extract -xf deb-extract/data.tar.*
+      - install -Dm755 deb-extract/usr/bin/hertzline /app/bin/hertzline
+      - |
+        if [ -d deb-extract/usr/lib/Hertzline ]; then
+          mkdir -p /app/lib/Hertzline
+          cp -r deb-extract/usr/lib/Hertzline/. /app/lib/Hertzline
+          find /app/lib/Hertzline -type f -exec chmod 644 {} \;
+        fi
+      - |
+        DESKTOP=$(find deb-extract/usr/share/applications -name '*.desktop' | head -n1)
+        sed -i 's/^Icon=.*/Icon=org.hertzline.Hertzline/' "$DESKTOP"
+        install -Dm644 "$DESKTOP" /app/share/applications/org.hertzline.Hertzline.desktop
+      - |
+        for size in 32x32 128x128 256x256@2; do
+          ICON=$(find deb-extract/usr/share/icons/hicolor/$size -type f 2>/dev/null | head -n1 || true)
+          if [ -n "$ICON" ]; then
+            install -Dm644 "$ICON" "/app/share/icons/hicolor/$size/apps/org.hertzline.Hertzline.png"
+          fi
+        done
+      - install -Dm644 org.hertzline.Hertzline.metainfo.xml /app/share/metainfo/org.hertzline.Hertzline.metainfo.xml

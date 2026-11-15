@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Draft AppStream metainfo for Hertzline Flatpak (HZ-050). Re-verify before Flathub PR. -->
+<component type="desktop-application">
+  <id>org.hertzline.Hertzline</id>
+  <launchable type="desktop-id">org.hertzline.Hertzline.desktop</launchable>
+  <name>Hertzline</name>
+  <developer id="org.hertzline">
+    <name>Hertzline</name>
+  </developer>
+  <summary>Measure, explain, and reverse game and desktop tuning</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <url type="homepage">https://github.com/Hertzline</url>
+  <url type="bugtracker">https://github.com/Hertzline/app/issues</url>
+  <description>
+    <p>
+      Hertzline measures frame times and hardware stats on your machine, applies only
+      reversible changes you choose, and restores them when you ask or when you uninstall.
+      It never claims a performance gain it has not measured locally.
+    </p>
+  </description>
+  <content_rating type="oars-1.1" />
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <releases>
+    <release version="0.0.0" date="2026-11-15">
+      <description>
+        <p>Packaging draft only; no public Linux release artifacts yet.</p>
+      </description>
+    </release>
+  </releases>
+</component>

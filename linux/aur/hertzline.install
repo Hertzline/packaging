@@ -1,0 +1,24 @@
+# AUR install script for hertzline (HZ-050 draft).
+# pre_remove invokes host helper restore_all when present (AC-7.3).
+
+post_install() {
+  gtk-update-icon-cache -q -t -f usr/share/icons/hicolor 2>/dev/null || true
+  update-desktop-database -q 2>/dev/null || true
+}
+
+post_upgrade() {
+  post_install
+}
+
+pre_remove() {
+  if command -v hertzline-helper >/dev/null 2>&1; then
+    hertzline-helper restore_all --reason uninstall --json || true
+  elif [[ -x usr/bin/hertzline-helper ]]; then
+    usr/bin/hertzline-helper restore_all --reason uninstall --json || true
+  fi
+}
+
+post_remove() {
+  gtk-update-icon-cache -q -t -f usr/share/icons/hicolor 2>/dev/null || true
+  update-desktop-database -q 2>/dev/null || true
+}
