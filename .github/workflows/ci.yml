@@ -63,3 +63,6 @@ jobs:
 
       - name: HZ-053 winget manifests
         run: python scripts/check_hz053.py
+
+      - name: HZ-059 v1 release candidate gates
+        run: python scripts/check_hz059.py

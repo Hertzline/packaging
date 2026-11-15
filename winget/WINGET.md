@@ -64,9 +64,23 @@ ARP `Publisher` from that MSI is `hertzline` (Tauri Manufacturer); `AppsAndFeatu
 5. Run `python scripts/check_hz053.py` and `winget validate --manifest <version-dir>`.
 6. Stop. Owner opens the winget-pkgs PR only after explicit approval (HZ-054).
 
+## v1.0.0 RC draft (HZ-059)
+
+After building Windows installers at app version `1.0.0`:
+
+```bash
+python scripts/prepare_rc_winget.py
+python scripts/check_hz059.py
+winget validate --manifest winget/manifests/h/Hertzline/Hertzline/1.0.0
+```
+
+The `1.0.0` folder is a local RC draft. Refresh SHA-256 / ProductCode from the **signed** MSI before any submission. Still no winget-pkgs PR without owner approval (HZ-054).
+
 ## Local checks
 
 ```bash
 python scripts/check_hz053.py
 winget validate --manifest winget/manifests/h/Hertzline/Hertzline/0.0.0
+python scripts/check_hz059.py
+winget validate --manifest winget/manifests/h/Hertzline/Hertzline/1.0.0
 ```

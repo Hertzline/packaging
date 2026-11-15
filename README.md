@@ -28,6 +28,7 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 | `winget/` | HZ-053 draft manifests for `Hertzline.Hertzline` (no PR without approval) |
 | `winget/WINGET.md` | Schema 1.12.0 notes, refresh steps, owner gate for HZ-054 |
 | `release/RELEASE_FEED.md` | HZ-052 packaging -> `website` releases.json hook |
+| `release/HZ059_RC.md` | HZ-059 v1.0.0 RC runbook (owner signing/publish gates) |
 | `fixtures/hz052/` | Sample SHA256SUMS for the release-feed gate |
 | `scripts/` | Build, checksum, sign, and gate helpers |
 
@@ -113,6 +114,21 @@ winget validate --manifest winget/manifests/h/Hertzline/Hertzline/0.0.0
 
 Do **not** open a PR to `microsoft/winget-pkgs` without explicit owner approval (HZ-054). See `winget/WINGET.md`.
 
+## v1 release candidate (HZ-059)
+
+See `release/HZ059_RC.md`. Summary:
+
+```bash
+# After app version is 1.0.0 and Windows artifacts exist:
+python scripts/build_windows.py
+python scripts/prepare_rc_winget.py
+python scripts/sign_windows.py --public --artifacts dist/windows/1.0.0
+python scripts/check_hz059.py
+winget validate --manifest winget/manifests/h/Hertzline/Hertzline/1.0.0
+```
+
+Keep website `releases.json` at `not_released` until signed public HTTPS assets exist. Agents never deploy Vercel or open winget-pkgs PRs.
+
 ## Checks
 
 ```bash
@@ -125,6 +141,7 @@ python scripts/check_hz050.py
 python scripts/check_hz051.py
 python scripts/check_hz052.py
 python scripts/check_hz053.py
+python scripts/check_hz059.py
 ```
 
 ### Uninstall restore (HZ-018 / HZ-049 / HZ-050 / HZ-051 / AC-7.3)

@@ -169,13 +169,22 @@ def main() -> int:
         return 1
 
     out_dir = DIST / version
+    if out_dir.is_dir():
+        shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     copied: list[Path] = []
     for src in artifacts:
+        # Only keep artifacts whose filename embeds this version (avoid stale peers).
+        if version not in src.name:
+            print(f"WARN skip stale bundle artifact {src.name}")
+            continue
         dest = out_dir / src.name
         shutil.copy2(src, dest)
         copied.append(dest)
         print(f"PASS artifact {dest} ({dest.stat().st_size} bytes)")
+    if not copied:
+        print(f"FAIL no version-matched MSI/NSIS artifacts for {version}")
+        return 1
 
     checksum_script = ROOT / "scripts" / "checksums.py"
     code = subprocess.call([sys.executable, str(checksum_script), str(out_dir)])
