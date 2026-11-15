@@ -10,14 +10,18 @@ Owner supplies certificates and approves purchases. Agents never purchase certs,
 |---|---|
 | `spikes/D5.md` | HZ-008 packaging + signing costs decision |
 | `spikes/D6.md` | HZ-009 auto-update + signature verification decision |
-| `windows/uninstall-restore.ps1` | HZ-018 uninstall invokes `hertzline-helper restore_all` |
+| `windows/WINDOWS.md` | HZ-049 MSI + NSIS build, checksums, uninstall restore |
+| `windows/SIGNING.md` | Authenticode / Artifact Signing; fail closed |
+| `windows/MSIX.md` | Optional Store MSIX (not Tauri-native) |
+| `windows/uninstall-restore.ps1` | AC-7.3 uninstall invokes `hertzline-helper restore_all` |
+| `windows/nsis-hooks.nsh` | NSIS `PREUNINSTALL` restore hook |
+| `windows/wix/uninstall-restore.wxs` | MSI CustomAction before `RemoveFiles` |
 | `linux/prerm-restore.sh` | HZ-018 deb/rpm prerm restore hook |
 | `macos/uninstall-restore.sh` | HZ-018 uninstall restore before SMAppService unregister |
-| `windows/` | MSI / NSIS / MSIX notes and future scripts |
 | `linux/` | Flatpak / AppImage / deb / rpm / AUR notes |
 | `macos/` | dmg / notarization / Homebrew cask notes |
 | `winget/` | Manifests for `Hertzline.Hertzline` (authored later) |
-| `scripts/` | Checksum and release helpers |
+| `scripts/` | Build, checksum, sign, and gate helpers |
 
 ## Decision (D5)
 
@@ -38,6 +42,19 @@ See `spikes/D6.md`. Summary:
 - Manual download + SHA-256 always available.
 - Never signature-optional or silent unsigned updates.
 
+## Windows build (HZ-049)
+
+Requires sibling `../app` on a Windows host (WiX for MSI). See `windows/WINDOWS.md`.
+
+```bash
+python scripts/build_windows.py --check-only
+python scripts/build_windows.py
+python scripts/sign_windows.py --public --artifacts dist/windows/<version>
+python scripts/build_msix.py
+```
+
+Public signing fails closed without owner-supplied credentials (`windows/SIGNING.md`).
+
 ## Checks
 
 ```bash
@@ -45,9 +62,10 @@ See `spikes/D6.md`. Summary:
 python scripts/check_d5.py
 python scripts/check_d6.py
 python scripts/check_hz018.py
+python scripts/check_hz049.py
 ```
 
-### Uninstall restore (HZ-018 / AC-7.3)
+### Uninstall restore (HZ-018 / HZ-049 / AC-7.3)
 
 Before deleting binaries, installers must run the OS restore hook so outstanding Hertzline changes are reverted without the UI:
 

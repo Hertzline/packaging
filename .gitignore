@@ -1,0 +1,12 @@
+# Build outputs (HZ-049)
+/dist/
+/windows/staged/
+/windows/tauri.windows.bundle.generated.json
+
+# Local tooling
+.DS_Store
+Thumbs.db
+*.pfx
+*.p12
+*.key
+certificate/

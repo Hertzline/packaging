@@ -1,4 +1,4 @@
-# Packaging spike CI (D5 + D6). Actions pinned to commit SHAs (REPOS.md / RULES.md).
+# Packaging CI (D5 + D6 + HZ-018 + HZ-049). Actions pinned to commit SHAs.
 name: ci
 
 on:
@@ -36,3 +36,5 @@ jobs:
       - name: HZ-018 uninstall restore hooks
         run: python scripts/check_hz018.py
 
+      - name: HZ-049 Windows MSI/NSIS packaging gates
+        run: python scripts/check_hz049.py

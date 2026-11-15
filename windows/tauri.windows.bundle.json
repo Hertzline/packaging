@@ -1,0 +1,23 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis"],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "installerHooks": "../../packaging/windows/nsis-hooks.nsh"
+      },
+      "wix": {
+        "language": "en-US",
+        "fragmentPaths": ["../../packaging/windows/wix/uninstall-restore.wxs"],
+        "componentRefs": ["HertzlineRestoreMarker"]
+      }
+    },
+    "resources": [
+      "../../packaging/windows/uninstall-restore.ps1"
+    ]
+  }
+}
