@@ -194,7 +194,7 @@ def main() -> int:
             return fail("winget validate reported failure")
         if "manifest validation succeeded" not in lowered:
             return fail(f"winget validate unexpected exit={validate.returncode}")
-        print("PASS winget validate 1.0.0")
+        print(f"PASS winget validate {VERSION}")
 
     # Linux/macOS RC builds are host-gated.
     if sys.platform.startswith("linux"):
