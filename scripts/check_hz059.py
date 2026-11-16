@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""HZ-059 local check: v1.0.0 RC packaging gates (no store/winget PR)."""
+"""HZ-059 local check: release packaging gates (no store/winget PR)."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE = ROOT.parent
 APP = WORKSPACE / "app"
 WEBSITE = WORKSPACE / "website"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 PACKAGE_ID = "Hertzline.Hertzline"
 MANIFEST_DIR = (
     ROOT / "winget" / "manifests" / "h" / "Hertzline" / "Hertzline" / VERSION
