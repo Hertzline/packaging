@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE = ROOT.parent
 APP = WORKSPACE / "app"
 WEBSITE = WORKSPACE / "website"
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 PACKAGE_ID = "Hertzline.Hertzline"
 MANIFEST_DIR = (
     ROOT / "winget" / "manifests" / "h" / "Hertzline" / "Hertzline" / VERSION
